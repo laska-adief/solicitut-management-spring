@@ -33,8 +33,10 @@ public class CustomerService {
     Pageable pageable;
     pageable = PageRequest.of(page, size);
 
+    String filterCustomerName = payload.getFilterCustomerName();
+
     Mono<Long> customerCountMono = customerRepository.count();
-    Mono<List<CustomerModel>> customerListMono = customerRepository.findAllBy(pageable).collectList();
+    Mono<List<CustomerModel>> customerListMono = customerRepository.findAllByCustomerNameContainingIgnoreCase(pageable, filterCustomerName).collectList();
 
     return Mono.zip(customerCountMono, customerListMono).map( tuple -> {
       long totalCount = tuple.getT1();
