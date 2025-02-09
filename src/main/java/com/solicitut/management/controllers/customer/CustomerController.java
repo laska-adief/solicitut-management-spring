@@ -27,9 +27,10 @@ public class CustomerController {
     @RequestParam(defaultValue = "10") int size,
     @RequestParam(defaultValue = "0") int page,
     @RequestParam(defaultValue = "") String sortName,
-    @RequestParam(defaultValue = "") String sortValue
+    @RequestParam(defaultValue = "") String sortValue,
+    @RequestParam(defaultValue = "") String filterCustomerName
   ){
-    CustomerListRequestModel payload = new CustomerListRequestModel(size, page, sortName, sortValue);
+    CustomerListRequestModel payload = new CustomerListRequestModel(size, page, sortName, sortValue, filterCustomerName);
     return customerService.getAllCustomer(payload);
   }
 }
