@@ -9,7 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CustomerListRequestModel extends ListRequestModel {
-  public CustomerListRequestModel(int size, int page, String sortName, String sortValue) {
+  String filterCustomerName;
+  public CustomerListRequestModel(int size, int page, String sortName, String sortValue, String filterCustomerName) {
     super(size, page, sortName, sortValue);
+    this.filterCustomerName = filterCustomerName;
   }
 }
