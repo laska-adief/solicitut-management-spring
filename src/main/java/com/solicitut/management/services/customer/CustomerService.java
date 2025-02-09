@@ -10,6 +10,7 @@ import com.solicitut.management.repositories.customer.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,19 @@ public class CustomerService {
   }
 
   public Mono<ResponseEntity<ApiResponseModel<Object>>> getAllCustomer(CustomerListRequestModel payload) {
+    Pageable pageable;
     int size = payload.getSize();
     int page = payload.getPage();
-    Pageable pageable;
-    pageable = PageRequest.of(page, size);
+    String sortName = payload.getSortName();
+    String sortValue = payload.getSortValue();
+
+    if(!sortName.isEmpty() && !sortValue.isEmpty()) {
+      Sort.Order order = new Sort.Order(Sort.Direction.fromString(sortValue), sortName);
+      Sort sort = Sort.by(order);
+      pageable = PageRequest.of(page, size, sort);
+    } else {
+      pageable = PageRequest.of(page, size);
+    }
 
     String filterCustomerName = payload.getFilterCustomerName();
     String filterCustomerStatus = payload.getFilterCustomerStatus();
