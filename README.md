@@ -52,5 +52,4 @@ Once application is running, you can navigate using the default port http://loca
 
 ## Next Step
 Upcoming features include:
-- Customer detail
 - Add, edit, and delete customer functionality
