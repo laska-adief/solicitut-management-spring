@@ -5,11 +5,10 @@ import com.solicitut.management.models.general.ApiResponseModel;
 import com.solicitut.management.services.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/customer")
@@ -33,5 +32,12 @@ public class CustomerController {
   ){
     CustomerListRequestModel payload = new CustomerListRequestModel(size, page, sortName, sortValue, filterCustomerName, filterCustomerStatus);
     return customerService.getAllCustomer(payload);
+  }
+
+  @GetMapping("detail/{id}")
+  public Mono<ResponseEntity<ApiResponseModel<Object>>> getDetailCustomer(
+    @PathVariable(value = "id") UUID id
+  ) {
+    return customerService.getDetailCustomer(id);
   }
 }
