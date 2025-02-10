@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CustomerService {
@@ -27,6 +28,10 @@ public class CustomerService {
   public CustomerService(CustomerRepository customerRepository) {
     this.customerRepository = customerRepository;
   }
+
+  ApiResponseModel<Object> response;
+  ErrorResponseModel errorNotFound = ErrorCodes.ErrorNotFound;
+  ApiResponseModel<Object> responseNotFound = new ApiResponseModel<>(errorNotFound);
 
   public Mono<ResponseEntity<ApiResponseModel<Object>>> getAllCustomer(CustomerListRequestModel payload) {
     Pageable pageable;
@@ -60,16 +65,22 @@ public class CustomerService {
       List<CustomerModel> customerList = tuple.getT2();
 
       if(customerList.isEmpty()) {
-        ErrorResponseModel errorNotFound = ErrorCodes.ErrorNotFound;
-        ApiResponseModel<Object> responseNotFound = new ApiResponseModel<>(errorNotFound);
         return new ResponseEntity<>(responseNotFound, HttpStatus.CONFLICT);
       }
 
       int dataCount = (int) totalCount;
       int pageCount = (int )Math.ceil((double) dataCount / size);
       CustomerListResponseModel customerListRes = new CustomerListResponseModel(dataCount, pageCount, customerList);
-      ApiResponseModel<Object> response = new ApiResponseModel<>(customerListRes);
+      response = new ApiResponseModel<>(customerListRes);
       return new ResponseEntity<>(response, HttpStatus.OK);
     });
+  }
+
+  public Mono<ResponseEntity<ApiResponseModel<Object>>> getDetailCustomer(UUID customerId) {
+    return customerRepository.findById(customerId)
+      .flatMap(customer -> {
+        response = new ApiResponseModel<>(customer);
+        return Mono.just(new ResponseEntity<>(response, HttpStatus.OK));
+      });
   }
 }
