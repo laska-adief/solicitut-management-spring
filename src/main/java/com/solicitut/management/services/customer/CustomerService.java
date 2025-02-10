@@ -81,6 +81,7 @@ public class CustomerService {
       .flatMap(customer -> {
         response = new ApiResponseModel<>(customer);
         return Mono.just(new ResponseEntity<>(response, HttpStatus.OK));
-      });
+      })
+      .switchIfEmpty(Mono.just(new ResponseEntity<>(responseNotFound, HttpStatus.CONFLICT)));
   }
 }
