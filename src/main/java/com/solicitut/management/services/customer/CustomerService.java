@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -83,5 +84,20 @@ public class CustomerService {
         return Mono.just(new ResponseEntity<>(response, HttpStatus.OK));
       })
       .switchIfEmpty(Mono.just(new ResponseEntity<>(responseNotFound, HttpStatus.CONFLICT)));
+  }
+
+  public Mono<ResponseEntity<ApiResponseModel<Object>>> postAddCustomer(CustomerModel payload) {
+    CustomerModel payloadCustomer = new CustomerModel();
+    payloadCustomer.setCustomerName(payload.getCustomerName());
+    payloadCustomer.setCustomerNumber(payload.getCustomerNumber());
+    payloadCustomer.setCardNumber(payload.getCardNumber());
+    payloadCustomer.setStatus(payload.getStatus());
+    payloadCustomer.setCreatedAt(LocalDateTime.now());
+    payloadCustomer.setUpdatedAt(LocalDateTime.now());
+    return customerRepository.save(payloadCustomer)
+      .map(customer -> {
+        response = new ApiResponseModel<>(customer);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+      });
   }
 }
