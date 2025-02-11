@@ -1,6 +1,7 @@
 package com.solicitut.management.controllers.customer;
 
 import com.solicitut.management.models.customer.CustomerListRequestModel;
+import com.solicitut.management.models.customer.CustomerModel;
 import com.solicitut.management.models.general.ApiResponseModel;
 import com.solicitut.management.services.customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,12 @@ public class CustomerController {
     @PathVariable(value = "id") UUID id
   ) {
     return customerService.getDetailCustomer(id);
+  }
+
+  @PostMapping("add")
+  public Mono<ResponseEntity<ApiResponseModel<Object>>> postAddCustomer(
+    @RequestBody CustomerModel payload
+    ) {
+    return customerService.postAddCustomer(payload);
   }
 }
