@@ -107,18 +107,26 @@ public class CustomerService {
         CustomerModel updatedCustomer = new CustomerModel();
         if(payload.getCustomerName() != null) {
           updatedCustomer.setCustomerName(payload.getCustomerName());
+        } else {
+          updatedCustomer.setCustomerName(existingCustomer.getCustomerName());
         }
 
         if(payload.getCustomerNumber() != null) {
           updatedCustomer.setCustomerNumber(payload.getCustomerNumber());
+        } else {
+          updatedCustomer.setCustomerNumber(existingCustomer.getCustomerNumber());
         }
 
         if(payload.getCardNumber() != null) {
           updatedCustomer.setCardNumber(payload.getCardNumber());
+        } else {
+          updatedCustomer.setCardNumber(existingCustomer.getCardNumber());
         }
 
         if(payload.getStatus() != null) {
           updatedCustomer.setStatus(payload.getStatus());
+        } else {
+          updatedCustomer.setStatus(existingCustomer.getStatus());
         }
 
         updatedCustomer.setCustomerId(existingCustomer.getCustomerId());
