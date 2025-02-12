@@ -100,4 +100,36 @@ public class CustomerService {
         return new ResponseEntity<>(response, HttpStatus.OK);
       });
   }
+
+  public Mono<ResponseEntity<ApiResponseModel<Object>>> editCustomer(CustomerModel payload) {
+    return customerRepository.findById(payload.getCustomerId())
+      .flatMap(existingCustomer -> {
+        CustomerModel updatedCustomer = new CustomerModel();
+        if(payload.getCustomerName() != null) {
+          updatedCustomer.setCustomerName(payload.getCustomerName());
+        }
+
+        if(payload.getCustomerNumber() != null) {
+          updatedCustomer.setCustomerNumber(payload.getCustomerNumber());
+        }
+
+        if(payload.getCardNumber() != null) {
+          updatedCustomer.setCardNumber(payload.getCardNumber());
+        }
+
+        if(payload.getStatus() != null) {
+          updatedCustomer.setStatus(payload.getStatus());
+        }
+
+        updatedCustomer.setCustomerId(existingCustomer.getCustomerId());
+        updatedCustomer.setCreatedAt(existingCustomer.getCreatedAt());
+        updatedCustomer.setUpdatedAt(LocalDateTime.now());
+
+        return customerRepository.save(updatedCustomer)
+          .map(customer -> {
+            response = new ApiResponseModel<>(customer);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+          });
+      });
+  }
 }
