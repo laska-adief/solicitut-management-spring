@@ -138,6 +138,7 @@ public class CustomerService {
             response = new ApiResponseModel<>(customer);
             return new ResponseEntity<>(response, HttpStatus.OK);
           });
-      });
+      })
+      .switchIfEmpty(Mono.just(new ResponseEntity<>(responseNotFound, HttpStatus.CONFLICT)));
   }
 }
