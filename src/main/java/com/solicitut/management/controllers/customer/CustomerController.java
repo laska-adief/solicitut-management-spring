@@ -48,4 +48,11 @@ public class CustomerController {
     ) {
     return customerService.postAddCustomer(payload);
   }
+
+  @PatchMapping("edit")
+  public Mono<ResponseEntity<ApiResponseModel<Object>>> editCustomer(
+    @RequestBody CustomerModel payload
+  ) {
+    return customerService.editCustomer(payload);
+  }
 }
