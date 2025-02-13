@@ -55,4 +55,11 @@ public class CustomerController {
   ) {
     return customerService.editCustomer(payload);
   }
+
+  @DeleteMapping("delete/{id}")
+  public  Mono<ResponseEntity<ApiResponseModel<Object>>> deleteCustomer(
+    @PathVariable(value = "id") UUID id
+  ) {
+    return customerService.deleteCustomer(id);
+  }
 }
