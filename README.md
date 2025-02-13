@@ -49,7 +49,3 @@ PostgreSQL – Relational database for storing customer data.
 
 ## Usage
 Once application is running, you can navigate using the default port http://localhost:8080
-
-## Next Step
-Upcoming features include:
-- delete customer functionality
