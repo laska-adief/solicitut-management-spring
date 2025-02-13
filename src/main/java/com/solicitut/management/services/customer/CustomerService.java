@@ -141,4 +141,13 @@ public class CustomerService {
       })
       .switchIfEmpty(Mono.just(new ResponseEntity<>(responseNotFound, HttpStatus.CONFLICT)));
   }
+
+  public Mono<ResponseEntity<ApiResponseModel<Object>>> deleteCustomer(UUID id) {
+    return customerRepository.findById(id)
+      .flatMap(customer -> {
+        response = new ApiResponseModel<>(customer);
+        return customerRepository.deleteById(customer.getCustomerId())
+          .thenReturn(new ResponseEntity<>(response, HttpStatus.OK));
+      });
+  }
 }
