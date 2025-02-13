@@ -148,6 +148,7 @@ public class CustomerService {
         response = new ApiResponseModel<>(customer);
         return customerRepository.deleteById(customer.getCustomerId())
           .thenReturn(new ResponseEntity<>(response, HttpStatus.OK));
-      });
+      })
+      .switchIfEmpty(Mono.just(new ResponseEntity<>(responseNotFound, HttpStatus.CONFLICT)));
   }
 }
